@@ -84,10 +84,10 @@ bash -c "$(wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/insta
 Note that the oh-my-zsh installation script asks for your password to change your default shell to zsh. Use the password you set above (vagrant).
 * I like to keep all my shell configuration settings in one common `~/.myrc` file that's shared between bash and zsh
 ```
-echo "\n\n## ~/.bashrc is marked READ-ONLY. Use ~./myrc instead." >> ~/.bashrc
+echo "\n\n## ~/.bashrc is marked READ-ONLY. Use ~/.myrc instead." >> ~/.bashrc
 echo "if [ -e ~/.myrc ]; then source ~/.myrc; fi" >> ~/.bashrc
 chmod a-w ~/.bashrc
-echo "\n\n## ~/.zshrc is marked READ-ONLY. Use ~./myrc instead." >> ~/.bashrc
+echo "\n\n## ~/.zshrc is marked READ-ONLY. Use ~/.myrc instead." >> ~/.bashrc
 echo "if [ -e ~/.myrc ]; then source ~/.myrc; fi" >> ~/.zshrc
 chmod a-w ~/.zshrc
 touch ~/.myrc

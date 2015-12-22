@@ -132,11 +132,7 @@ ln -s ~/dotfiles/.vimrc ~/.vimrc
 ex -c ":PluginInstall"
 ```
 That last command installs all the Vundle plugins I use.
-* I use [YouCompleteMe](https://github.com/Valloric/YouCompleteMe)  for semantic code completion
-```bash
-cd ~/.vim/bundle/YouCompleteMe
-./install.py --clang-completer
-```
+
 
 ## Setting up GPDB
 * Download the sources and build it
@@ -283,4 +279,43 @@ $PGHOME/bin/pg_ctl -D $PGDATA -l $PGDATA/db.log stop
 * You can now connect to the database using the following client command.
 ```bash
 $PGHOME/bin/psql
+```
+
+## [Optional] Index the source files
+* I use `vi` with `ctags` and `cscope`. I put the following commands in a shell script at `$GPDB/setup_tags.sh` to easily index the source code.
+```bash
+#!/bin/bash
+CWD=`pwd`
+cd /
+find $CWD -name "*.[ch]" -o -name "*.cpp" | grep -v "$CWD/gpdb-dist/" > $CWD/cscope.files
+cd $CWD
+cscope -bq&
+
+ctags -R --exclude=gpdb-dist&
+wait
+```
+## [Optional] Setting up YouCompleteMe
+* I use [YouCompleteMe](https://github.com/Valloric/YouCompleteMe)  for semantic code completion
+```bash
+cd ~/.vim/bundle/YouCompleteMe
+./install.py --clang-completer
+```
+* We need `clang` to use YouCompleteMe and its configuration generator.
+```bash
+sudo yum install clang
+```
+* YCM-Generator generates a config file for YouCompleteMe with all the compile flags
+```bash
+cd $GPDB
+python ~/.vim/bundle/YCM-Generator/config_gen.py .
+cd $PGDB
+python ~/.vim/bundle/YCM-Generator/config_gen.py .
+```
+
+## [Optional] Install more development convenience tools
+```bash
+sudo yum -y install ack                   # alternative to fgrep
+sudo yum -y install tmux                  # alternative to screen
+ln -sf ~/dotfiles/.tmux.conf ~/.tmux.conf # Import my configuration settings
+echo "alias tmux=\"tmux -2\"" >> ~/.myrc  # 256 color support
 ```
